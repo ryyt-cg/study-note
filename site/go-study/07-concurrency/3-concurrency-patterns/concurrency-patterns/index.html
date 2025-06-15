@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Concurrency patterns - My Study Note</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Study Note</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#concurrency-patterns" class="nav-link">Concurrency Patterns</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#a-boring-function" class="nav-link">A boring function</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#go-routines" class="nav-link">Go Routines</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#channels" class="nav-link">Channels</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#boring-channel" class="nav-link">Boring Channel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#boring-function-that-returns-a-receive-channel" class="nav-link">Boring function that returns a receive channel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#channels-as-a-handle-on-a-service" class="nav-link">Channels as a handle on a service</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#multiplexing" class="nav-link">Multiplexing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#restoring-sequence" class="nav-link">Restoring Sequence</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#select-channel" class="nav-link">Select Channel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#fain-in-multiplexing-again" class="nav-link">Fain-in (Multiplexing) again</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#timeout-using-select" class="nav-link">Timeout using Select</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#timeout-for-whole-conversation-using-select" class="nav-link">Timeout for whole conversation using Select</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#quit-channel" class="nav-link">Quit channel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#receive-on-quit-channel" class="nav-link">Receive on Quit Channel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#daisy-chain" class="nav-link">Daisy-chain</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#systems-software" class="nav-link">Systems Software</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#google-search-a-fake-framework" class="nav-link">Google Search: A fake framework</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#google-search-10" class="nav-link">Google Search 1.0</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#google-search-20" class="nav-link">Google Search 2.0</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#google-search-21" class="nav-link">Google Search 2.1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#avoid-timeout" class="nav-link">Avoid Timeout</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#summary" class="nav-link">Summary</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#one-advise" class="nav-link">One advise:</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#conclusion" class="nav-link">Conclusion</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<!-- TOC -->
+<ul>
+<li><a href="#concurrency-patterns">Concurrency Patterns</a></li>
+<li><a href="#a-boring-function">A boring function</a></li>
+<li><a href="#go-routines">Go Routines</a></li>
+<li><a href="#channels">Channels</a><ul>
+<li><a href="#synchronization">Synchronization</a></li>
+<li><a href="#buffered-channel">Buffered Channel</a></li>
+</ul>
+</li>
+<li><a href="#boring-channel">Boring Channel</a></li>
+<li><a href="#boring-function-that-returns-a-receive-channel">Boring function that returns a <strong>receive</strong> channel</a></li>
+<li><a href="#channels-as-a-handle-on-a-service">Channels as a handle on a service</a></li>
+<li><a href="#multiplexing">Multiplexing</a></li>
+<li><a href="#restoring-sequence">Restoring Sequence</a></li>
+<li><a href="#select-channel">Select Channel</a></li>
+<li><a href="#fain-in-multiplexing-again">Fain-in (Multiplexing) again</a></li>
+<li><a href="#timeout-using-select">Timeout using Select</a></li>
+<li><a href="#timeout-for-whole-conversation-using-select">Timeout for whole conversation using Select</a></li>
+<li><a href="#quit-channel">Quit channel</a></li>
+<li><a href="#receive-on-quit-channel">Receive on Quit Channel</a></li>
+<li><a href="#daisy-chain">Daisy-chain</a></li>
+<li><a href="#systems-software">Systems Software</a></li>
+<li><a href="#google-search-a-fake-framework">Google Search: A fake framework</a></li>
+<li><a href="#google-search-10">Google Search 1.0</a></li>
+<li><a href="#google-search-20">Google Search 2.0</a></li>
+<li><a href="#google-search-21">Google Search 2.1</a></li>
+<li><a href="#avoid-timeout">Avoid Timeout</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#one-advise">One advise:</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<!-- TOC -->
+
+<h1 id="concurrency-patterns"><a href="https://www.youtube.com/watch?v=f6kdp27TYZs">Concurrency Patterns</a></h1>
+<ul>
+<li>Concurrency is the composition of independently executing processes.</li>
+<li>Concurrency is a way to structure software, particularly as a way to write clean code that interacts well with the real world.</li>
+<li>
+<p>Concurrency is not parallelism.</p>
+</li>
+<li>
+<p>Concurrency is not parallelism, although it enables parallelism.</p>
+</li>
+<li>If you have only one processor, your program can still be concurrent but it cannot be parallel.</li>
+<li>On the other hand, a well-written concurrent program might run efficiently in parallel on a multi-processors.</li>
+</ul>
+<h2 id="a-boring-function"><a href="https://www.youtube.com/watch?v=f6kdp27TYZs&amp;t=418s">A boring function</a></h2>
+<ol>
+<li>boring function is to print a message to the console and sleeps for a random amount of time in milliseconds.</li>
+<li>
+<p>main function spawn the boring function and waits for 2 seconds before exiting.</p>
+<p><a href="../boring-func-1.go">boring function</a></p>
+</li>
+</ol>
+<h2 id="go-routines">Go Routines</h2>
+<ul>
+<li>It's an independently executing function, launched by a go statement.</li>
+<li>It has its own call stack, which grows and shrinks as required.</li>
+<li>It's very cheap.  It's practical to have thousands, even hundreds of thousands of goroutines.</li>
+<li>It's not a thread.</li>
+<li>There might be only one thread in a program with thousands of goroutines</li>
+</ul>
+<h2 id="channels">Channels</h2>
+<ul>
+<li>Think of a bucket chain</li>
+<li>3 components: sender, buffer, receiver</li>
+<li>The buffer is optional</li>
+<li>Channels are the pipes that connect concurrent goroutines.</li>
+<li>unbuffered channel is blocked when no data sent or received</li>
+</ul>
+<h3 id="synchronization">Synchronization</h3>
+<ul>
+<li>When the main function executes &lt;-c, it will wait for a value to be sent.</li>
+<li>Similarly, when the boring function executes c &lt;- value, it waits for a receiver to be ready.</li>
+<li>A sender and receiver must both be ready to play their part in the communication.  Otherwise, we wait until they are.</li>
+<li>Thus channels both communicate and synchronize.</li>
+</ul>
+<h3 id="buffered-channel">Buffered Channel</h3>
+<ul>
+<li>A buffered channel is a channel with a buffer.</li>
+</ul>
+<pre><code class="language-go">// buffered channel with a capacity of 10
+ch := make(chan int, 10)
+</code></pre>
+<ul>
+<li>Buffering removes synchronization.</li>
+<li>Buffering makes them more like Erlang's mailboxes.</li>
+<li>Buffered channels can be important for some problems, but they are more subtle to reason about.</li>
+</ul>
+<h2 id="boring-channel"><a href="https://youtu.be/f6kdp27TYZs?t=700">Boring Channel</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../boring-channel-2.go">boring communication</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="boring-function-that-returns-a-receive-channel">Boring function that returns a <strong>receive</strong> channel</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../func-return-channel-3.go">return a <strong>receive</strong> channel</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="channels-as-a-handle-on-a-service"><a href="https://www.youtube.com/watch?v=f6kdp27TYZs&amp;t=1017s">Channels as a handle on a service</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../channel-as-a-service-4.go">channel as a handle</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="multiplexing"><a href="https://www.youtube.com/watch?v=f6kdp27TYZs&amp;t=1160s">Multiplexing</a></h2>
+<p>These programs make Joe and Ann count in lockstep.  We can instead use a fan-in function to let whosoever is ready to talk.
+<img alt="fan-in.png" src="../image/fan-in.png" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../fan-in-5.go">multiplexing</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="restoring-sequence">Restoring Sequence</h2>
+<ul>
+<li>Send a channel on a channel, making goroutine waits its turn.</li>
+<li>Receive all messages, then enable them again by sending on a private channel.</li>
+<li>First we define a message type that contains a channel for reply</li>
+</ul>
+<pre><code class="language-go">type Message struct {
+    str string
+    wait chan bool
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../restore-sequence-6.go">Restoring Sequence</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="select-channel">Select Channel</h2>
+<ul>
+<li>A control structure unique to concurrency.</li>
+<li>The reason channels and goroutines are built into the language.</li>
+<li>The select statement provides another way to handle multiple channels.</li>
+<li>It's like a switch, but each case is a communication:</li>
+<li>All channels are evaluated.</li>
+<li>Selection blocks until one communication can proceed. which then does.</li>
+<li>If multiple can proceed, select chooses pseudo-randomly.</li>
+<li>A default clause, if present, executes immediately if no channel is ready.</li>
+</ul>
+<pre><code class="language-go">select {
+    case &lt;-ch1:
+        fmt.Println(&quot;ch1&quot;)
+    case &lt;-ch2:
+        fmt.Println(&quot;ch2&quot;)
+    default:
+        fmt.Println(&quot;default&quot;)
+}
+</code></pre>
+<h2 id="fain-in-multiplexing-again">Fain-in (Multiplexing) again</h2>
+<p>Rewrite our original fan-in function.  Only one goroutine is needed.</p>
+<p>Old implementation:</p>
+<pre><code class="language-go">func fanIn(input1, input2 &lt;- chan string) &lt;- chan string {
+    c := make(chan string)
+    go func() { for { c &lt;- &lt;-input1 } }()
+    go func() { for { c &lt;- &lt;- inputs2 } }()
+
+    return c
+}
+</code></pre>
+<p>We can rewrite it using select statement. Only one goroutine is needed:</p>
+<pre><code class="language-go">func fanIn(input1, input2 &lt;- chan string) &lt;- chan string {
+    c := make(chan string)
+    go func() {
+        for {
+            select {
+            case s := &lt;-input1:
+                c &lt;- s
+                case s := input2:
+                c &lt;- s
+            }           
+        }           
+    }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../select-fan-in-8.go">Fan-in using select</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="timeout-using-select">Timeout using Select</h2>
+<p>The time.After function returns a channel that blocks for the specified duration.  After the duration, it sends the current time, once.</p>
+<pre><code class="language-go">func main() {
+    c := boring9(&quot;Joe&quot;)
+
+    for {
+        select {
+        case s := &lt;-c:
+            fmt.Println(s)
+        case &lt;-time.After(1 * time.Second):
+            fmt.Println(&quot;You're too slow.&quot;)
+            return
+        }
+    }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../select-timeout-9.go">timeout using select</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="timeout-for-whole-conversation-using-select">Timeout for whole conversation using Select</h2>
+<p>Create the timer once, outside the loop, to time out the whole conversation. (In the previous program, we had a timeout for each message)</p>
+<pre><code class="language-go">func main() {
+    c := boring10(&quot;Joe&quot;)
+    timeout := time.After(5 * time.Second)
+
+    for {
+        select {
+        case s := &lt;-c:
+            fmt.Println(s)
+        case &lt;-timeout:
+            fmt.Println(&quot;You talk too much.&quot;)
+            return
+        }
+    }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../select-timeout-10.go">timeout using select</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="quit-channel">Quit channel</h2>
+<p>We can turn this around and tell joe to stop when we're tired of listening to him.</p>
+<pre><code class="language-go">    quit := make(chan bool)
+    c := boring11(&quot;Joe&quot;, quit)
+    for i := rand.Intn(10); i &gt;= 0; i-- {
+        fmt.Println(&lt;-c)
+    }
+    quit &lt;- true
+</code></pre>
+<pre><code class="language-go">    select {
+    case c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i):
+    // do nothing
+    case &lt;-quit:
+        return
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../select-quit-channel-11.go">Quit Channel</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="receive-on-quit-channel">Receive on Quit Channel</h2>
+<p>How do we know it's finished?  Wait for it to tell us it's done: receive on the quit channel.</p>
+<pre><code class="language-go">    quit := make(chan string)
+    c := boring12(&quot;Joe&quot;, quit)
+    for i := rand.Intn(10); i &gt;= 0; i-- {
+    fmt.Println(&lt;-c)
+    }
+    quit &lt;- &quot;Bye!&quot;
+    fmt.Printf(&quot;Joe says: %q\n&quot;, &lt;-quit)
+</code></pre>
+<pre><code class="language-go">        select {
+        case c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i):
+            // do nothing
+        case &lt;-quit:
+            //cleanup()
+            quit &lt;- &quot;See you!&quot;
+            return
+        }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../select-quit-channel-12.go">Receive on Quit Channel</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="daisy-chain">Daisy-chain</h2>
+<p><img alt="daisy-chain.png" src="../image/daisy-chain.png" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../daisy-chain-13.go">Daisy Chain</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="systems-software">Systems Software</h2>
+<p>Go was designed for writing systems software.
+Let's see how the concurrency features come into play.</p>
+<p><strong><em>*Example: Google Search</em></strong>*
+Q: What does Google Search do? <br/>
+A: Given a query, return a page of search results (and some ads) <br/>
+Q: How do we get the search results? <br/>
+A: Send the query to Web search, Image search, YouTube, Maps, News, etc., then mix the results</p>
+<p>How do we implement this?</p>
+<h2 id="google-search-a-fake-framework">Google Search: A fake framework</h2>
+<p>We can simulate the search function, much as we simulated conversation before.</p>
+<pre><code class="language-go">var (
+    Web   = FakeSearch(&quot;web&quot;)
+    Image = FakeSearch(&quot;image&quot;)
+    Video = FakeSearch(&quot;video&quot;)
+)
+
+type Result string
+type Search func(query string) Result
+
+func FakeSearch(kind string) Search {
+    return func(query string) Result {
+        time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+        return Result(fmt.Sprintf(&quot;%s result for %q\n&quot;, kind, query))
+    }
+}
+</code></pre>
+<h2 id="google-search-10">Google Search 1.0</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../search-14.go">ggole search</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="google-search-20">Google Search 2.0</h2>
+<p>Run the Web, Image, and Viideo searches concurrently, and wait for all results.  No locks. No condition variables.  No callbacks.</p>
+<pre><code class="language-go">func Google20(query string) (results []Result) {
+    c := make(chan Result)
+    go func() { c &lt;- Web(query) }()
+    go func() { c &lt;- Image(query) }()
+    go func() { c &lt;- Video(query) }()
+
+    for i := 0; i &lt; 3; i++ {
+        result := &lt;-c
+        results = append(results, result)
+    }
+
+    return results
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../search-20.go">Google Search 2.0</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="google-search-21">Google Search 2.1</h2>
+<p>Don't wait for slow servers. No locks. No condition variables. No callbacks.</p>
+<pre><code class="language-go">func Google21(query string) (results []Result) {
+    c := make(chan Result)
+    go func() { c &lt;- Web(query) }()
+    go func() { c &lt;- Image(query) }()
+    go func() { c &lt;- Video(query) }()
+
+    timeout := time.After(80 * time.Millisecond)
+
+    for i := 0; i &lt; 3; i++ {
+        select {
+        case result := &lt;-c:
+            results = append(results, result)
+        case &lt;-timeout:
+            fmt.Println(&quot;time out&quot;)
+            return
+        }
+    }
+
+    return results
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../search-21.go">Google Search 2.1</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="avoid-timeout">Avoid Timeout</h2>
+<p>Q: How do we avoid discarding results from slow servers? <br/>
+A: Replicate the servers.  Send requests to multiple replicas, and use the first response.</p>
+<pre><code class="language-go">func First(query string, replicas ...Search) Result {
+    c := make(chan Result)
+    searchReplica := func(i int) { c &lt;- replicas[i](query) }
+
+    for i := range replicas {
+        go searchReplica(i)
+    }
+
+    return &lt;-c
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../first-function-29.go">using first function</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><a href="../search-30.go">Google Search 3.0</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary">Summary</h2>
+<p>In just a few simple transformations we used Go's concurrency primitives to convert a:
+- slow
+- sequential
+- failure-sensitive</p>
+<p>program into one that is:</p>
+<ul>
+<li>fast</li>
+<li>concurrent</li>
+<li>replicated</li>
+<li>robust</li>
+</ul>
+<p><img alt="tip-tricks.png" src="../image/tip-tricks.png" /></p>
+<h2 id="one-advise">One advise:</h2>
+<p><img alt="donot-overdo.png" src="../image/donot-overdo.png" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Goroutines and channels make it easy to express complex operations dealing with:
+- multiple inputs
+- multiple outputs
+- timeouts
+- failure</p>
+<p>And they're fun to use.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

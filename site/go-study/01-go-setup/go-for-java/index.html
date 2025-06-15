@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>Go for java - My Study Note</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Study Note</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h3 id="golang-vs-java">Golang vs Java</h3>
+<p>When it comes to web development, both Golang and Java have advantages and disadvantages. For web development, here is a
+feature-by-feature comparison −</p>
+<p>Due to its built-in garbage collector and concurrency support, Golang is faster than Java for web development. The
+garbage collector in Java can cause latency issues in large-scale applications, affecting performance.</p>
+<p>Scalability − Because Golang is so scalable, it's an excellent choice for large-scale web applications. Scalability in
+Java is determined by the framework and the developer's ability to manage the application's resources.</p>
+<p>Simplicity − Golang is known for its simplicity and ease of use, making it an excellent choice for new programmers.
+Because of its extensive libraries and frameworks, Java has a steeper learning curve and can be more complex.</p>
+<p>Because of its extensive security features and strong type system, Java is considered more secure than Golang. For
+security features, Golang, on the other hand, relies on external libraries.</p>
+<p>Libraries and Frameworks − Java has a large number of libraries and frameworks that help developers create complex
+web applications. Although Golang has a smaller community and fewer libraries and frameworks, the ones that do exist
+are highly efficient and well-documented.</p>
+<p>Programming language Maturity</p>
+<p>Programmer Community</p>
+<p>Tools and Frameworks</p>
+<h3 id="go-and-java-have-much-in-common">Go and Java have much in common</h3>
+<ul>
+<li>C family (imperative, braces)</li>
+<li>Statically typed</li>
+<li>Garbage collected</li>
+<li>Memory safe (nil references, runtime bounds checks)</li>
+<li>Primitive variables are always initialized (zero/nil/false)</li>
+<li>Methods</li>
+<li>Interfaces</li>
+<li>Type assertions (instanceof)</li>
+<li>Reflection</li>
+</ul>
+<h3 id="go-differs-from-java-in-several-ways">Go differs from Java in several ways</h3>
+<ol>
+<li>[ ]  Programs compile to machine code. There's no VM.</li>
+<li>[ ]  Statically linked binaries</li>
+<li>[ ]  Control over memory layout</li>
+<li>[ ]  Function values and lexical closures</li>
+<li>[ ]  Built-in strings (UTF-8)</li>
+<li>[ ]  Built-in concurrency</li>
+</ol>
+<h3 id="go-intentionally-leaves-out-many-features">Go intentionally leaves out many features</h3>
+<ul>
+<li>No classes</li>
+<li>No constructors</li>
+<li>No inheritance</li>
+<li>No final</li>
+<li>No exceptions</li>
+<li>No annotations</li>
+</ul>
+<h3 id="why-does-go-leave-out-those-features">Why does Go leave out those features?</h3>
+<p>Clarity is critical.</p>
+<p>When reading code, it should be clear what the program will do.</p>
+<p>When writing code, it should be clear how to make the program do what you want.</p>
+<p>Sometimes this means writing out a loop instead of invoking an obscure function.</p>
+<p>(Don't DRY out.)</p>
+<p>For more background on design:</p>
+<p>Less is exponentially more (Pike, 2012)
+Go at Google: Language Design in the Service of Software Engineering (Pike, 2012)</p>
+<p>Go looks familiar to Java programmers</p>
+<p>Main.java</p>
+<pre><code>public class Main {
+    public static void main(String[] args) {
+    System.out.println(&quot;Hello, world!&quot;);
+}
+</code></pre>
+<p>hello.go</p>
+<pre><code class="language-go">package main
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Println(&quot;Hello, 世界!&quot;)
+}
+
+</code></pre>
+<p>Hello, web server</p>
+<pre><code class="language-go">package main
+
+import (
+&quot;fmt&quot;
+&quot;log&quot;
+&quot;net/http&quot;
+)
+
+func main() {
+    http.HandleFunc(&quot;/hello&quot;, handleHello)
+    fmt.Println(&quot;serving on http://localhost:7777/hello&quot;)
+    log.Fatal(http.ListenAndServe(&quot;localhost:7777&quot;, nil))
+}
+
+func handleHello(w http.ResponseWriter, req *http.Request) {
+    log.Println(&quot;serving&quot;, req.URL)
+    fmt.Fprintln(w, &quot;Hello, 世界!&quot;)
+}
+</code></pre>
+<p>Types follow names in declarations.
+Exported names are Capitalized. Unexported names are not.</p>
+<h3 id="goroutines">Goroutines</h3>
+<p>Goroutines are like lightweight threads.</p>
+<p>They start with tiny stacks and resize as needed.</p>
+<p>Go programs can have hundreds of thousands of them.</p>
+<p>Start a goroutine using the go statement:</p>
+<p>go f(args)
+The Go runtime schedules goroutines onto OS threads.</p>
+<p>Blocked goroutines don't use a thread.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

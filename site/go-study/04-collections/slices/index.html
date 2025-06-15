@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>Slices - My Study Note</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Study Note</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#slices" class="nav-link">Slices</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#working-with-slices" class="nav-link">Working with slices</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#three-index-slices" class="nav-link">Three index slices</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="slices">Slices</h1>
+<p>Slices - dynamic arrays that can shrink and grow</p>
+<h3 id="make-and-slice-literals">Make and slice literals</h3>
+<pre><code class="language-go">// Create a slice of strings.
+// Contains a length and capacity of 5 elements.
+slice := make([]string, 5)
+</code></pre>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length of 3 and has a capacity of 5 elements.
+slice := make([]int, 3, 5)
+</code></pre>
+<p><img alt="img.png" src="../image/slice-internals.png" /></p>
+<pre><code class="language-go">// Create a slice of integers.
+// Make the length larger than the capacity.
+slice := make([]int, 5, 3)
+
+Compiler Error:
+len larger than cap in make([]int)
+</code></pre>
+<pre><code class="language-go">// Create a slice of strings.
+// Contains a length and capacity of 5 elements.
+slice := []string{&quot;Red&quot;, &quot;Blue&quot;, &quot;Green&quot;, &quot;Yellow&quot;, &quot;Pink&quot;}
+
+// Create a slice of integers.
+// Contains a length and capacity of 3 elements.
+slice := []int{10, 20, 30}
+</code></pre>
+<pre><code class="language-go">// Create a slice of strings.
+// Initialize the 100th element with an empty string.
+slice := []string{99: &quot;99&quot;}
+</code></pre>
+<p>Notice, if you specify a value inside the [ ] operator, you’re creating an array. If you don’t specify a value, you’re
+creating a slice.</p>
+<pre><code class="language-go">// Create an array of three integers.
+array := [3]int{10, 20, 30}
+
+// Create a slice of integers with a length and capacity of three.
+slice := []int{10, 20, 30}
+</code></pre>
+<p>Declaring a nil slice</p>
+<pre><code class="language-go">// Create a nil slice of integers.
+var slice []int
+
+</code></pre>
+<p>A nil slice is the most common way you create slices in Go. They can be used with many of the standard library and
+built-in functions that work with slices. They’re useful when you want to represent a slice that doesn’t exist, such as
+when an exception occurs in a function that returns a slice</p>
+<p><img alt="img.png" src="../image/nil-slice.png" /></p>
+<pre><code class="language-go">// Use make to create an empty slice of integers.
+slice := make([]int, 0)
+
+// Use a slice literal to create an empty slice of integers.
+slice := []int{}
+</code></pre>
+<p>An empty slice contains a zero-element underlying array that allocates no storage. Empty slices are useful when you want
+to represent an empty collection, such as when a database query returns zero results</p>
+<p><img alt="img.png" src="../image/empty-slice.png" /></p>
+<h2 id="working-with-slices">Working with slices</h2>
+<p>Declaring an array using an array literal</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 5 elements.
+slice := []int{10, 20, 30, 40, 50}
+
+// Change the value of index 1.
+slice[1] = 25
+</code></pre>
+<p>Taking the slice of a slice</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 5 elements.
+slice := []int{10, 20, 30, 40, 50}
+
+
+// Create a new slice.
+// Contains a length of 2 and capacity of 4 elements.
+newSlice := slice[1:3]
+</code></pre>
+<p><img alt="img.png" src="../image/underlying-array.png" /></p>
+<p>Calculating the length and capacity for any new slice is performed using the following formula.</p>
+<pre><code class="language-go">For slice[i:j] with an underlying array of capacity k
+
+Length:   j - i
+Capacity: k - i
+</code></pre>
+<p>making changes to a slice</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 5 elements.
+slice := []int{10, 20, 30, 40, 50}
+
+// Create a new slice.
+// Contains a length of 2 and capacity of 4 elements.
+newSlice := slice[1:3]
+
+// Change index 1 of newSlice.
+// Change index 2 of the original slice.
+newSlice[1] = 35
+</code></pre>
+<p><img alt="img.png" src="../image/new-slice.png" /></p>
+<p>Runtime error showing index out of range</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 5 elements.
+slice := []int{10, 20, 30, 40, 50}
+
+// Create a new slice.
+// Contains a length of 2 and capacity of 4 elements.
+newSlice := slice[1:3]
+
+// Change index 3 of newSlice.
+// This element does not exist for newSlice.
+newSlice[3] = 45
+
+Runtime Exception:
+panic: runtime error: index out of range
+</code></pre>
+<p>Using append to add an element to a slice</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 5 elements.
+slice := []int{10, 20, 30, 40, 50}
+
+// Create a new slice.
+// Contains a length of 2 and capacity of 4 elements.
+newSlice := slice[1:3]
+
+// Allocate a new element from capacity.
+// Assign the value of 60 to the new element.
+newSlice = append(newSlice, 60)
+</code></pre>
+<p><img alt="img_1.png" src="../image/append-op.png" /></p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 4 elements.
+slice := []int{10, 20, 30, 40}
+
+// Append a new value to the slice.
+// Assign the value of 50 to the new element.
+newSlice := append(slice, 50)
+</code></pre>
+<p>Using append to increase the length and capacity of a slice</p>
+<pre><code class="language-go">// Create a slice of integers.
+// Contains a length and capacity of 4 elements.
+slice := []int{10, 20, 30, 40}
+
+// Append a new value to the slice.
+// Assign the value of 50 to the new element.
+newSlice := append(slice, 50)
+</code></pre>
+<p><img alt="img.png" src="../image/grow-slice.png" /></p>
+<h2 id="three-index-slices">Three index slices</h2>
+<p>Declaring a slice of string using a slice literal</p>
+<pre><code class="language-go">// Create a slice of strings.
+// Contains a length and capacity of 5 elements.
+source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
+</code></pre>
+<p><img alt="img.png" src="../image/index-slice.png" /></p>
+<p>Performing a three-index slice</p>
+<pre><code class="language-go">// Slice the third element and restrict the capacity.
+// Contains a length of 1 element and capacity of 2 elements.
+slice := source[2:3:4]
+</code></pre>
+<p>A representation of the new slice after the operation
+<img alt="img.png" src="../3-index-slice.png" /></p>
+<p>How length and capacity are calculated</p>
+<pre><code>For slice[i:j:k]  or  [2:3:4]
+
+Length:   j - i  or  3 - 2 = 1
+Capacity: k - i  or  4 - 2 = 2
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

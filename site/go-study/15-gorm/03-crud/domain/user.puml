@@ -1,0 +1,14 @@
+@startuml
+
+entity User {
+    + ID: int <<autoincrement>>
+    --
+    + Name: string
+    + Email: string
+    + Birthday: time.Time
+    + CreatedAt: time.Time
+    + UpdatedAt: time.Time
+    + DeletedAt: time.Time
+}
+
+@enduml

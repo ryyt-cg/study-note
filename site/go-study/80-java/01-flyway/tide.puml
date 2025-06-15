@@ -1,0 +1,20 @@
+@startuml  TIDE Applications
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS2/spring.puml
+!include DEVICONS2/postgresql.puml
+!include FONTAWESOME/users.puml
+
+
+Container(portfolio, "Portfolio API", "Java", "Portfolio/Account View", $sprite="spring")
+Container(contribution, "Contribution API", "Java", "Account Contribution",  $sprite="spring")
+Container(preferences, "Preferences API", "java", "User Preferences CRUD", $sprite="spring")
+ContainerDb(db, "DIP Database", "Postgres SQL", "Store User Settings", $sprite="postgresql")
+
+Rel(portfolio, preferences, "Requests/Responses", "HTTP Protocol")
+Rel(contribution, preferences, "Requests/Responses", "HTTP Protocol")
+Rel(preferences, db, "Reads/Writes")
+
+@enduml

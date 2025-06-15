@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>Why Go? - My Study Note</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Study Note</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#why-go" class="nav-link">Why Go?</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#philosophy" class="nav-link">Philosophy</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#go-vs-java" class="nav-link">Go vs Java</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#go-and-java-have-much-in-common" class="nav-link">Go and Java have much in common</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#go-differs-from-java-in-several-ways" class="nav-link">Go differs from Java in several ways</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#go-intentionally-leaves-out-many-features" class="nav-link">Go intentionally leaves out many features</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="why-go">Why Go?</h1>
+<h2 id="philosophy">Philosophy</h2>
+<ul>
+<li>Simplicity - Go is designed to be simple and easy to learn. It has a clean and easy-to-read syntax that makes it easy
+  to write and maintain code.</li>
+<li>Static Typing - Go is statically typed, which means that the type of a variable is known at compile time. This helps
+  to catch errors early in the development process.</li>
+<li>Compiled Language - Go is a compiled language, which means that it is fast and efficient. It is designed to be fast to
+  compile and fast to run, making it a good choice for performance-critical applications.</li>
+<li>Efficient Memory Management - Go has a garbage collector that automatically manages memory, making it easy to write
+  memory-safe code without worrying about memory leaks.</li>
+<li>Dependency Management - Go has a built-in package management system called "go modules" that makes it easy to manage
+  dependencies and share code with other developers.</li>
+<li>Concurrency - Go has built-in support for concurrency, which makes it easy to write programs that can do multiple
+  things at once. This is especially useful for writing web servers and other networked applications.</li>
+<li>Performance - Go is a compiled language, which means that it is fast and efficient. It is designed to be fast to
+  compile and fast to run, making it a good choice for performance-critical applications.</li>
+<li>Cloud Native - Go is designed to work well in cloud-native environments, making it a good choice for building
+  microservices and other cloud-based applications.</li>
+<li>Active Community - Go has a growing and active community of developers who are constantly working to improve the
+  language and its ecosystem.</li>
+<li>Open Source - Go is an open-source language, which means that it is free to use and can be modified and distributed by
+  anyone.</li>
+<li>Standard Library - Go has a rich standard library that provides a wide range of functionality, including networking,
+  file I/O, and text processing.</li>
+</ul>
+<h2 id="go-vs-java">Go vs Java</h2>
+<p>https://go.dev/talks/2015/go-for-java-programmers.slide#2</p>
+<p>Golang is a multi-paradigm and better supports concurrency. While Golang runs faster than Java, Java has more
+features and better support. Go has a leaner learning curve as compared to Java. If simplicity and memory management are
+your priority, then Go is a good option</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Golang</th>
+<th>Java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syntax</td>
+<td>has a simpler syntax with fewer keywords</td>
+<td>has a more verbose syntax</td>
+</tr>
+<tr>
+<td>Concurrency</td>
+<td>has built-in support for concurrency with goroutine and channel. light-weight</td>
+<td>has concurrency like thread.  Much more heavy-weight</td>
+</tr>
+<tr>
+<td>Compilation</td>
+<td>is a compiled language with fast compilation times</td>
+<td>is compiled language to be interpreted in JVM</td>
+</tr>
+<tr>
+<td>Garbage collection</td>
+<td>has a concurrent garbage collector</td>
+<td></td>
+</tr>
+<tr>
+<td>Package management</td>
+<td>has a built-in package management system called "go modules"</td>
+<td>use external tools like Maven or Gradle</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>high-performance and low-latency</td>
+<td>slower than Golang since it runs on JVMs</td>
+</tr>
+<tr>
+<td>Community support</td>
+<td>has a growing and active community</td>
+<td>has a mature community</td>
+</tr>
+</tbody>
+</table>
+<h2 id="go-and-java-have-much-in-common">Go and Java have much in common</h2>
+<ul>
+<li>C family (imperative, braces)</li>
+<li>Statically typed</li>
+<li>Garbage collected</li>
+<li>Memory safe (nil references, runtime bounds checks)</li>
+<li>Primitive variables are always initialized (zero/nil/false)</li>
+<li>Methods</li>
+<li>Interfaces</li>
+<li>Type assertions (instanceof)</li>
+<li>Reflection</li>
+</ul>
+<h2 id="go-differs-from-java-in-several-ways">Go differs from Java in several ways</h2>
+<ol>
+<li>[ ]  Programs compile to machine code. There's no VM.</li>
+<li>[ ]  Statically linked binaries</li>
+<li>[ ]  Control over memory layout</li>
+<li>[ ]  Function values and lexical closures</li>
+<li>[ ]  Built-in strings (UTF-8)</li>
+<li>[ ]  Built-in concurrency</li>
+<li>[ ]  Built-in Dependency Management</li>
+</ol>
+<h2 id="go-intentionally-leaves-out-many-features">Go intentionally leaves out many features</h2>
+<ul>
+<li>No classes</li>
+<li>No constructors</li>
+<li>No inheritance</li>
+<li>No final</li>
+<li>No exceptions</li>
+<li>No annotations</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>Error and Error Handling - My Study Note</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Study Note</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#error-and-error-handling" class="nav-link">Error and Error Handling</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#ways-to-create-an-error-in-go" class="nav-link">Ways to create an error in Go</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#error-wrapping" class="nav-link">Error Wrapping</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#error-handling" class="nav-link">Error Handling</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="error-and-error-handling">Error and Error Handling</h1>
+<p>"Don't just check errors, handle them gracefully."</p>
+<p>Go has different ways to handle errors compared to other languages like Javascript and Java, which use the try...catch,
+or Python with its try...exception block.
+Go uses error values to indicate an abnormal condition. By convention, errors are the last return value and have type
+error, a built-in interface.</p>
+<p>For example,</p>
+<pre><code class="language-go">func Sqrt(f float64) (float64, error) {
+    if f &lt; 0 {
+        return 0, errors.New(&quot;math: square root of negative number&quot;)
+    }
+    return math.Sqrt(f), nil
+}
+</code></pre>
+<p>Go does not enforce error handling. You have to decide how the function you created returns the error.<br/>
+The built-in error interface type is defined as follows:</p>
+<pre><code class="language-go">type error interface {
+    Error() string
+}
+</code></pre>
+<p>Usually, the error is nil if the function call is successful; otherwise, it returns an error value.</p>
+<pre><code class="language-go">result, err := Sqrt(-1)
+if err != nil {
+    // handle error appropriately
+    fmt.Println(err)
+}
+// continue with the result
+</code></pre>
+<h2 id="ways-to-create-an-error-in-go">Ways to create an error in Go</h2>
+<h3 id="string-based-error">String-based error</h3>
+<pre><code class="language-go">// simple string-based error
+err1 := errors.New(&quot;math: square root of negative number&quot;)
+
+// with formatting
+err2 := fmt.Errorf(&quot;math: square root of negative number %g&quot;, x)
+</code></pre>
+<p>The built-in error limitation is that it only returns a string and *
+<em>~~does not come with stack traces, making it challenging to locate where an error occurred~~</em>*. The error could pass
+through a number of functions before being printed. If you want to return more information, you can create a custom
+error type.</p>
+<h3 id="custom-error-with-data">Custom Error with Data</h3>
+<p>To define a custom error type, you must satisfy the predeclared error interface.</p>
+<pre><code class="language-go">type SyntaxError struct {
+    Line int
+    Col  int
+}
+
+// Implement the Error() method on the SyntaxError type
+func (e *SyntaxError) Error() string {
+    return fmt.Sprintf(&quot;%d:%d: syntax error&quot;, e.Line, e.Col)
+}
+
+// Then create an error object using MyError struct.
+func SyntaxErrorInstance() error {
+    return &amp;SyntaxError {&quot;Syntax type not supported&quot;}
+}
+</code></pre>
+<h2 id="error-wrapping">Error Wrapping</h2>
+<p>Go 1.13 introduced the <code>errors.Is</code> and <code>errors.As</code> functions to help with error wrapping. Error wrapping is a technique
+that allows you to wrap an error with additional context. This is useful when you want to add more information to an
+error without losing the original error message.</p>
+<pre><code class="language-go">package somepkg
+
+func Is(err, target error) bool
+
+func As(err error, target interface{}) bool
+</code></pre>
+<p>Is checks whether any error in err's chain matches target. It returns true if any error matches.</p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;errors&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+// Define a custom error type
+type MyError struct {
+    Msg string
+}
+
+func (e *MyError) Error() string {
+    return e.Msg
+}
+
+func main() {
+    // Create an instance of the custom error
+    myErr := &amp;MyError{&quot;This is a custom error&quot;}
+
+    // Wrap the custom error with additional context
+    wrappedErr := fmt.Errorf(&quot;An error occurred: %w&quot;, myErr)
+
+    // Use errors.Is to check if the wrapped error is a specific error
+    if errors.Is(wrappedErr, myErr) {
+        fmt.Println(&quot;The error is a MyError&quot;)
+    } else {
+        fmt.Println(&quot;The error is not a MyError&quot;)
+    }
+
+    // Use errors.As to extract the custom error from the wrapped error
+    var errAsMyError *MyError
+    if errors.As(wrappedErr, &amp;errAsMyError) {
+        fmt.Println(&quot;The error as MyError:&quot;, errAsMyError)
+    } else {
+        fmt.Println(&quot;The error could not be converted to MyError&quot;)
+    }
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<p>Go this <a href="https://go.dev/blog/error-handling-and-go">link</a><br/>
+Best practices for error handling in Go, go <a href="https://blog.logrocket.com/error-handling-golang-best-practices/">here</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
