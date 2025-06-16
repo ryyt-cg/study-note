@@ -1,7 +1,10 @@
 site_name: My Study Note
 nav:
   - Home: index.md
-
+  - Golang:
+      - 'Philosophy': './go-study/01-go-setup/01-philosophy.md'
+      - 'Setting Up': './go-study/01-go-setup/setup-go-env.md'
+      - 'Quick Start': './go-study/02-quick-start/get-started.md'
 theme:
   name: material
   features:
