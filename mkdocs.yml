@@ -17,16 +17,16 @@ nav:
       - 'Setting Up': './rust-study/01-rust-setup/setup-rust-env.md'
       - 'Quick Start': './rust-study/02-quick-start/quick-start.md'
       - 'Programming Concepts':
-          - 'Variable': './rust-study/02-declarative-programming-concepts/1-variable-and-mutability.md'
-          - 'Data Types': './rust-study/02-declarative-programming-concepts/2-data-types.md'
-          - 'Flow Controls': './rust-study/02-declarative-programming-concepts/3-flow-controls.md'
-          - 'Collections': './rust-study/02-declarative-programming-concepts/4-collections.md'
+          - 'Variable': './rust-study/03-programming-concepts/1-variable-and-mutability.md'
+          - 'Data Types': './rust-study/03-programming-concepts/2-data-types.md'
+          - 'Flow Controls': './rust-study/03-programming-concepts/3-flow-controls.md'
+          - 'Collections': './rust-study/03-programming-concepts/4-collections.md'
       - 'Generics and Traits':
-          - 'Generics': './rust-study/10-generics-and-traits-lifetimes/generics.md'
+          - 'Generics': './rust-study/10-generic-type-traits-lifetimes/generics.md'
           - 'Traits': './rust-study/10-generic-type-traits-lifetimes/traits.md'
       - 'Concurrency':
-          - Standard: './rust-study/15-concurrency/01-concurrency.md'
-          - Tokio: './rust-study/15-concurrency/tokio-01-concurrency.md'
+          - Standard: './rust-study/15-concurrency/concurrency.md'
+          - Tokio: './rust-study/15-concurrency/tokio-concurrency.md'
 theme:
   name: material
   features:
