@@ -5,6 +5,14 @@ nav:
       - 'Philosophy': './go-study/01-go-setup/01-philosophy.md'
       - 'Setting Up': './go-study/01-go-setup/setup-go-env.md'
       - 'Quick Start': './go-study/02-quick-start/get-started.md'
+      - 'Basics':
+          - 'Variable, Method, & Function': './go-study/03-basics/basics.md'
+      - 'Collections':
+          - 'Array': './go-study/04-collections/array.md'
+          - 'Slices': './go-study/04-collections/slices.md'
+          - 'Map': './go-study/04-collections/maps.md'
+      - Error Handling:
+          - 'Error': './go-study/08-error/01-error.md'
 theme:
   name: material
   features:
