@@ -68,7 +68,7 @@ fn main() {
 
 **_x variable can not re-assign._**
 
-Immutable variable can not be reassigned but ti can be re-declare or called shadowing.
+Immutable variable can not be reassigned, but it can be re-declare or called shadowing.
 
 ```rust
 fn main() {
