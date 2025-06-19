@@ -11,6 +11,11 @@ nav:
           - 'Array': './go-study/04-collections/array.md'
           - 'Slices': './go-study/04-collections/slices.md'
           - 'Map': './go-study/04-collections/maps.md'
+      - Interface:
+          - Interfaces: './go-study/05-interface/interfaces.md'
+          - Reflection: './go-study/05-interface/reflection.md'
+      - Concurrency:
+          - Goroutine: './go-study/07-concurrency/1-goroutine/overview.md'
       - Error Handling:
           - 'Error': './go-study/08-error/01-error.md'
   - Rust:
