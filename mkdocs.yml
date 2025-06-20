@@ -26,6 +26,21 @@ nav:
           - 'Data Types': './rust-study/03-programming-concepts/2-data-types.md'
           - 'Flow Controls': './rust-study/03-programming-concepts/3-flow-controls.md'
           - 'Collections': './rust-study/03-programming-concepts/4-collections.md'
+      - Ownership and Borrowing:
+          - 'Ownership': './rust-study/04-ownership/1-ownership.md'
+          - 'Borrowing': './rust-study/04-ownership/2-borrow.md'
+      - Rust Code Style:
+          - 'Function': './rust-study/05-structuring-rust-code/1-functions.md'
+          - 'Nested Functions': './rust-study/05-structuring-rust-code/2-nested-functions.md'
+          - 'Defining Structs': './rust-study/05-structuring-rust-code/3-defining-and-instantiating-structs.md'
+          - 'Struct Implementation': './rust-study/05-structuring-rust-code/4-struct-impl.md'
+      - 'Enum and Pattern Matching':
+          - 'Enum': './rust-study/06-enum-and-pattern-matching/1-enum.md'
+          - 'Pattern Matching': './rust-study/06-enum-and-pattern-matching/2-channel.md'
+      - 'Modules and Crates':
+          - 'Modules': './rust-study/07-modules/1-mod.md'
+          - 'File System': './rust-study/07-modules/2-mod-and-filesystem.md'
+          - 'Test Functions': './rust-study/07-modules/3-test-functions.md'
       - 'Generics and Traits':
           - 'Generics': './rust-study/10-generic-type-traits-lifetimes/generics.md'
           - 'Traits': './rust-study/10-generic-type-traits-lifetimes/traits.md'
